@@ -1,0 +1,14 @@
+
+.title {
+    width: 25%;
+    display: inline-block;
+}
+
+.content {
+    width: 75%;
+    display: inline-block;
+}
+
+.divider {
+    margin: 5% 5%
+}
