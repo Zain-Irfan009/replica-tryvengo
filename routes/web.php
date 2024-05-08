@@ -32,8 +32,8 @@ Route::group(['middleware' => ['verify.shopify']], function () {
 
 Route::get('/testing1', function() {
 
-    $shop=\App\Models\User::where('name','mubkhar-fragrances.myshopify.com')->first();
-$order=\App\Models\Order::where('id','7173')->first();
+//    $shop=\App\Models\User::where('name','mubkhar-fragrances.myshopify.com')->first();
+//$order=\App\Models\Order::where('id','7173')->first();
 
 //                        $scheduled_fulfillment = [
 //                        "fulfillment_order" => [
@@ -57,48 +57,48 @@ $order=\App\Models\Order::where('id','7173')->first();
 //                    dd($res);
 
 
-    $OrderItems = Lineitem::where('order_id',$order->id)->get();
-    $uniqueRealOrderIds = $OrderItems->groupBy('shopify_fulfillment_real_order_id');
-    foreach ($uniqueRealOrderIds as $orderId => $orderItems) {
-
-        $handle_fulfillment = [
-            "fulfillment" => [
-
-                "status"=>"scheduled",
-
-                "line_items_by_fulfillment_order" => [
-
-
-                ]
-            ]
-        ];
-
-        $line_items = LineItem::where('order_id', $order->id)->where('shopify_fulfillment_real_order_id', $orderId)->get();
-        $handle_temp_line_items=array();
-
-        foreach ($line_items as $item) {
-
-            array_push($handle_temp_line_items,[
-
-                "id"=>$item->shopify_fulfillment_order_id,
-                "quantity"=>$item->quantity,
-            ]);
-
-        }
-        array_push($handle_fulfillment["fulfillment"]["line_items_by_fulfillment_order"],[
-            "fulfillment_order_id"=>$orderId,
-            "fulfillment_order_line_items"=>$handle_temp_line_items,
-
-        ]);
-        $res = $shop->api()->rest('POST', '/admin/fulfillments.json',$handle_fulfillment);
-dd($res);
-
-    }
+//    $OrderItems = Lineitem::where('order_id',$order->id)->get();
+//    $uniqueRealOrderIds = $OrderItems->groupBy('shopify_fulfillment_real_order_id');
+//    foreach ($uniqueRealOrderIds as $orderId => $orderItems) {
+//
+//        $handle_fulfillment = [
+//            "fulfillment" => [
+//
+//                "status"=>"scheduled",
+//
+//                "line_items_by_fulfillment_order" => [
+//
+//
+//                ]
+//            ]
+//        ];
+//
+//        $line_items = LineItem::where('order_id', $order->id)->where('shopify_fulfillment_real_order_id', $orderId)->get();
+//        $handle_temp_line_items=array();
+//
+//        foreach ($line_items as $item) {
+//
+//            array_push($handle_temp_line_items,[
+//
+//                "id"=>$item->shopify_fulfillment_order_id,
+//                "quantity"=>$item->quantity,
+//            ]);
+//
+//        }
+//        array_push($handle_fulfillment["fulfillment"]["line_items_by_fulfillment_order"],[
+//            "fulfillment_order_id"=>$orderId,
+//            "fulfillment_order_line_items"=>$handle_temp_line_items,
+//
+//        ]);
+//        $res = $shop->api()->rest('POST', '/admin/fulfillments.json',$handle_fulfillment);
+//dd($res);
+//
+//    }
 
 
 
     $shop = \Illuminate\Support\Facades\Auth::user();
-    $shop=\App\Models\User::where('name','mubkhar-fragrances.myshopify.com')->first();
+    $shop=\App\Models\User::where('name','around-fragrances.myshopify.com')->first();
 //$shop=\App\Models\User::where('name','prod-awake-water.myshopify.com')->first();
     $response = $shop->api()->rest('GET', '/admin/webhooks.json');
 
