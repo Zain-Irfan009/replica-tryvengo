@@ -92,7 +92,7 @@
             </div>
 
             <div class="col-6">
-                <strong>Orders Pending: </strong> {{$pending_orders}}
+                <strong>Orders Unassigned: </strong> {{$pending_orders}}
             </div>
 
             <div class="col-6">
@@ -100,7 +100,7 @@
             </div>
 
             <div class="col-6">
-               <strong>Orders Delivered: </strong> {{$delivered_orders}}
+                <strong>Orders Successful: </strong> {{$delivered_orders}}
             </div>
         </div>
     </div>
@@ -123,19 +123,16 @@
                         <div class="input-group">
 
                             <select class="form-control " name="tryvengo_status">
-                                <option value="">Select Tryvengo Status</option>
-                                <option @if(isset($request) && $request->input('tryvengo_status')=='Pending') selected @endif value="Pending">Pending</option>
-                                <option @if(isset($request) && $request->input('tryvengo_status')=='Confirm') selected @endif value="Confirm">Confirm</option>
-                                <option @if(isset($request) && $request->input('tryvengo_status')=='Pick up in Progress') selected @endif value="Pick up in Progress">Pick up in Progress</option>
-                                <option @if(isset($request) && $request->input('tryvengo_status')=='Reached Pickup Location') selected @endif value="Reached Pickup Location">Reached Pickup Location</option>
-                                <option @if(isset($request) && $request->input('tryvengo_status')=='Picked') selected @endif value="Picked">Picked</option>
-                                <option @if(isset($request) && $request->input('tryvengo_status')=='Out For Delivery') selected @endif value="Out For Delivery">Out For Delivery</option>
-                                <option @if(isset($request) && $request->input('tryvengo_status')=='Reached Delivery Location') selected @endif value="Reached Delivery Location">Reached Delivery Location</option>
-                                <option @if(isset($request) && $request->input('tryvengo_status')=='Delivered') selected @endif value="Delivered">Delivered</option>
-                                <option @if(isset($request) && $request->input('tryvengo_status')=='Cancel') selected @endif value="Cancel">Cancel</option>
-                                <option @if(isset($request) && $request->input('tryvengo_status')=='Rescheduled') selected @endif value="Rescheduled">Rescheduled</option>
-                                <option @if(isset($request) && $request->input('tryvengo_status')=='Reject') selected @endif value="Reject">Reject</option>
-                                <option @if(isset($request) && $request->input('tryvengo_status')=='Return') selected @endif value="Return">Return</option>
+                                <option value="">Select Dhub Status</option>
+                                <option @if(isset($request) && $request->input('tryvengo_status')=='Unassigned') selected @endif value="Unassigned">Unassigned</option>
+                                <option @if(isset($request) && $request->input('tryvengo_status')=='Assigned') selected @endif value="Assigned">Assigned</option>
+                                <option @if(isset($request) && $request->input('tryvengo_status')=='Inprogress') selected @endif value="Inprogress">Inprogress</option>
+                                <option @if(isset($request) && $request->input('tryvengo_status')=='Successful') selected @endif value="Successful">Successful</option>
+                                <option @if(isset($request) && $request->input('tryvengo_status')=='Failed') selected @endif value="Failed">Failed</option>
+                                <option @if(isset($request) && $request->input('tryvengo_status')=='Canceled') selected @endif value="Canceled">Canceled</option>
+                                <option @if(isset($request) && $request->input('tryvengo_status')=='Accepted') selected @endif value="Accepted">Accepted</option>
+                                <option @if(isset($request) && $request->input('tryvengo_status')=='Declined') selected @endif value="Declined">Declined</option>
+
 
                             </select>
 
@@ -188,7 +185,7 @@
                                         <th>Customer</th>
                                         <th >Total Price</th>
                                         <th>Status</th>
-                                        <th >Tryvengo Status</th>
+                                        <th >Dhub Status</th>
                                         <th style="width: 20% !important;">Action</th>
                                     </tr>
                                     </thead>
@@ -196,7 +193,7 @@
 
                                     @foreach($orders as $order)
                                         @php
-                                                $tags=explode(',',$order->tags);
+                                            $tags=explode(',',$order->tags);
                                         @endphp
                                         <tr  class="product_detail" data-row_id="#varinat_details_{{$order->id}}">
                                             <td><input class="form-check-input single_check" value="{{$order->id}}"  type="checkbox"></td>
@@ -211,7 +208,7 @@
                                             <td>{{$order->currency}} {{$order->total_price}}</td>
                                             <td>
                                                 @if($order->status==0)
-                                                <span class="badge bg-danger">Not Pushed</span>
+                                                    <span class="badge bg-danger">Not Pushed</span>
                                                 @else
                                                     <span class="badge bg-success">Pushed</span>
                                                 @endif
@@ -219,13 +216,13 @@
 
                                             <td>
                                                 @if($order->tryvengo_status)
-                                                <span class="badge bg-primary">{{$order->tryvengo_status}}</span>
-                                                    @endif
+                                                    <span class="badge bg-primary">{{$order->tryvengo_status}}</span>
+                                                @endif
                                             </td>
                                             <td>
-                                            @if($order->status==0)
-                                                <a href="{{URL::tokenRoute('send.order.delivery',$order->id)}}" class="btn btn-primary view">Push to Tryvengo</a>
-                                            @endif
+                                                @if($order->status==0)
+                                                    <a href="{{URL::tokenRoute('send.order.delivery',$order->id)}}" class="btn btn-primary view">Push to Dhub</a>
+                                                @endif
                                             </td>
 
 
